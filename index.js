@@ -6,7 +6,6 @@ let callTools = document.querySelectorAll(".call");
 let OuterVideo = document.querySelector(".OutervideoBar");
 let InnerVideo = document.querySelector(".NestedvideoBar");
 let VisualsBox = document.querySelector("#visualsBox");
-// let msgPrivate = document.querySelector(".msg_private");
 let ApearLSbar = document.querySelector(".apearL");
 let ApearRSbar = document.querySelector(".apearR");
 let s_barDivL = document.querySelector("#s_barL");
@@ -30,7 +29,8 @@ let listofUserL = [],
   listnameL = [];
 let msgPrivate = [],
   room = {},
-  buttonListner = [],display;
+  buttonListner = [],
+  display;
 let userNameBox = document.querySelector("#s_listR");
 let s_Icon = document.querySelector(".material-symbols-outlined");
 let mode = "dark",
@@ -43,23 +43,20 @@ let data,
   windowFlag = true; //windowFlag is used to check the group chat user chat window is already present or not.
 var index = 0,
   className;
-  const alphabeticPattern= /^[A-Za-z]+$/;
-// const socket = io("http://localhost:8000");
-const socket=io('https://chatbook-server-3hmu.onrender.com');
+const alphabeticPattern = /^[A-Za-z]+$/;
+const socket = io("https://chatbook-server-3hmu.onrender.com");
 let name = prompt("Enter your name");
-if (name == "" || name == null ) {
+if (name == "" || name == null) {
   do {
     alert("Name is compulsory!");
     name = prompt("Enter your name");
   } while (name == "" || name == null);
 }
-if(!alphabeticPattern.test(name))
-{
+if (!alphabeticPattern.test(name)) {
   do {
     alert("Name Should conatin only Alphabets no  Whitespaces are allowed !");
     name = prompt("Enter your name");
-  } while (!alphabeticPattern.test(name))
-
+  } while (!alphabeticPattern.test(name));
 }
 
 // hiding the calltools
@@ -68,38 +65,35 @@ Array.from(callTools).forEach((eachtool) => {
 });
 
 // full screen btn adding event listener
+//no need to refactor it any more!!!
 fullscreenBtn.addEventListener("pointerdown", () => {
-
-  if(display !='fullScreen')
-  {
-  if (document.documentElement.requestFullscreen) {
-    document.documentElement.requestFullscreen();
-  } else if (document.documentElement.mozRequestFullscreen) {
-    document.documentElement.mozRequestFullscreen();
-  } else if (document.documentElement.webkitRequestFullscreen) {
-    document.documentElement.webkitRequestFullscreen();
-  } else if (document.documentElement.msRequestFullscreen) {
-    document.documentElement.msRequestFullscreen();
+  if (display != "fullScreen") {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.mozRequestFullscreen) {
+      document.documentElement.mozRequestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      document.documentElement.msRequestFullscreen();
+    }
+    display = "fullScreen";
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullscreen) {
+      document.mozCancelFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+    display = "smallScreen";
   }
-  display='fullScreen';
-}
-else{
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.mozCancelFullscreen) {
-    document.mozCancelFullscreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  }
-  display='smallScreen'
-}
 });
 
 function handleBtnclick(event) {
   // the commented below logic fails when a user is left and again eneter the  grp chat the sequence of rlistbtn is changed and the
-
 
   // using robust logic below comparing the class of privateMsg whit the class od e.traget.and then finding the associated privateMsg window
   //then openning or closing of window is being decided
@@ -118,7 +112,7 @@ function handleBtnclick(event) {
           eachtool.style.display = "inline-block";
         });
         msgPrivate[index].style.display = "flex";
-        msgPrivate[index].scrollTop =msgPrivate[index].scrollHeight;
+        msgPrivate[index].scrollTop = msgPrivate[index].scrollHeight;
         msgPrivate[index].style.left = "auto";
         if (name == msgPrivate[index].classList[2]) {
           headtext.innerHTML = msgPrivate[index].classList[2] + " (me)";
@@ -133,7 +127,7 @@ function handleBtnclick(event) {
         headtext.innerHTML == msgPrivate[index].classList[2]
       ) {
         msgContent.style.display = "flex";
-        msgContent.scrollTop =msgContent.scrollHeight;
+        msgContent.scrollTop = msgContent.scrollHeight;
 
         Array.from(callTools).forEach((eachtool) => {
           eachtool.style.display = "none";
@@ -149,17 +143,18 @@ function handleBtnclick(event) {
           eachtool.style.display = "inline-block";
         });
         msgPrivate.forEach((chatWindow, Lno) => {
-          if ((headtext.innerHTML == chatWindow.classList[2]) ||(headtext.innerHTML == chatWindow.classList[2]+' (me)'  )) {
-           
+          if (
+            headtext.innerHTML == chatWindow.classList[2] ||
+            headtext.innerHTML == chatWindow.classList[2] + " (me)"
+          ) {
             msgPrivate[Lno].style.display = "none";
-           
           }
-          console.log('try');
+          console.log("try");
         });
 
         // display none to the  msg window jisse dusre pe click kiya gya hai.
         msgPrivate[index].style.display = "flex";
-        msgPrivate[index].scrollTop =msgPrivate[index].scrollHeight;
+        msgPrivate[index].scrollTop = msgPrivate[index].scrollHeight;
 
         msgPrivate[index].style.left = "auto";
         // here in line 169 i have faced problem that the index of the chatwindow do not matches with the position/indx of the right button
@@ -195,7 +190,7 @@ function handleLeftBtnclick(event) {
         });
         msgPrivate[index].style.display = "flex";
         msgPrivate[index].style.left = "auto";
-        msgPrivate[index].scrollTop =msgPrivate[index].scrollHeight;
+        msgPrivate[index].scrollTop = msgPrivate[index].scrollHeight;
         if (name == msgPrivate[index].classList[2]) {
           headtext.innerHTML = msgPrivate[index].classList[2] + " (me)";
         } else {
@@ -209,7 +204,7 @@ function handleLeftBtnclick(event) {
         headtext.innerHTML == msgPrivate[index].classList[2]
       ) {
         msgContent.style.display = "flex";
-        msgContent.scrollTop =msgContent.scrollHeight;
+        msgContent.scrollTop = msgContent.scrollHeight;
 
         // not  allowing the calltools to visible whwn grp chat is open
         msgPrivate[index].style.display = "none";
@@ -229,12 +224,13 @@ function handleLeftBtnclick(event) {
         });
         //asscessing the previous open chat window from both left and  right side bar
         msgPrivate.forEach((chatWindow, Lno) => {
-          if ((headtext.innerHTML == chatWindow.classList[2]) ||(headtext.innerHTML == chatWindow.classList[2]+' (me)'  )) {
-           
+          if (
+            headtext.innerHTML == chatWindow.classList[2] ||
+            headtext.innerHTML == chatWindow.classList[2] + " (me)"
+          ) {
             msgPrivate[Lno].style.display = "none";
-           
           }
-          console.log('try');
+          console.log("try");
         });
         // scenario when the click to other chat window is done from left side bar  button that button donot exist in the left button.
 
@@ -249,7 +245,7 @@ function handleLeftBtnclick(event) {
         // display none to the  msg window jisse dusre pe click kiya gya hai.
         msgPrivate[index].style.display = "flex";
         msgPrivate[index].style.left = "auto";
-        msgPrivate[index].scrollTop =msgPrivate[index].scrollHeight;
+        msgPrivate[index].scrollTop = msgPrivate[index].scrollHeight;
 
         headtext.innerHTML = listnameL[index].innerHTML;
       }
@@ -261,11 +257,13 @@ function handleLeftBtnclick(event) {
 }
 
 // it also include saveContact emit emitter which saves the user personal contacts
+
+//NEED to understand and refactor the code.
 function outMsg(window, data) {
   var divCreate = document.createElement("div");
   divCreate.innerHTML =
     "<h5>" + "~ me" + "</h5>" + data.value + "<h6>" + data.time + "</h6>";
-
+//sending in the group window.
   if (
     (msgPrivate.length == 0 || msgPrivate[index].style.left != "auto") &&
     window == "group"
@@ -430,10 +428,11 @@ data = {
   value: "joined",
   time: ctime.toLocaleString(),
 };
-
+//making everyone know i have joined the chat!
 socket.emit("me-user-has-joined", data);
-// added the msgPrivate and msgContent on pointerDown event listener to close the side bars
 
+//NO NEED to refactor the code anymore!!!
+// added the msgPrivate and msgContent on pointerDown event listener to close the side bars
 ApearLSbar.addEventListener("pointerdown", () => {
   if (s_barDivL.style.left == "0px") {
     s_barDivL.style.left = "-300px";
@@ -450,6 +449,7 @@ ApearLSbar.addEventListener("pointerdown", () => {
   }
 });
 
+//NO NEED to refactor the code anymore!!!
 ApearRSbar.addEventListener("pointerdown", () => {
   if (s_barDivR.style.right == "0px") {
     s_barDivR.style.right = "-300px";
@@ -505,14 +505,14 @@ socket.on(name, (data) => {
     msgPrivate[nochatWindow] = document.createElement("div");
     msgPrivate[nochatWindow].classList.add("msg_private");
     msgPrivate[nochatWindow].classList.add("contdark");
+    msgPrivate[nochatWindow].classList.add(
+      data.contactName.trim().split(/\s+/)[0]
+    );
     msgPrivate[nochatWindow].addEventListener("pointerdown", () => {
       headIcon.style.scale = "0.7";
       headIcon.style.left = "0";
       headIcon.style.top = "0";
     });
-    msgPrivate[nochatWindow].classList.add(
-      data.contactName.trim().split(/\s+/)[0]
-    );
     bodyTag.appendChild(msgPrivate[nochatWindow]);
 
     nochatWindow++;
@@ -557,11 +557,9 @@ socket.on(name, (data) => {
 
   //data[0] is the getdata from the database..... only for the group chat window.
 
-  // data[2] is the personal message of the name user with its contacts.
-  console.log(data[2]);
+  // data[1] is the personal message of the name user with its contacts.
   Array.from(data[2]).forEach((eachdata) => {
     eachdata.forEach((specificData) => {
-      // console.log(specificData,typeof(specificData),specificData.value,specificData.name);
 
       if (specificData.from == name) {
         // pssing the parameter eachdata.name to get to know in which chat window the data has to printed.
@@ -835,6 +833,8 @@ socket.on("user-has-left", (data) => {
   }
   notifyMsg(data, "pink");
 });
+
+//No need to refactor the code anymore For message sent button
 // user sending message
 // applyting the condition to the format of data object gebnerated here.using headtext bar.
 sendBtn.addEventListener("pointerdown", () => {
@@ -867,6 +867,8 @@ sendBtn.addEventListener("pointerdown", () => {
     }
   }
 });
+
+//No need to refactor the code anymore For message sent button by pressing enter button!
 
 document.addEventListener("keypress", (e) => {
   if (e.key == "Enter" && msgInput.value != "") {
@@ -907,9 +909,15 @@ switchmode.addEventListener("pointerdown", () => {
     togglePos.classList.add("toggleOp");
     msgContent.classList.add("contLight");
     msgContent.classList.remove("contdark");
-    msgPrivate.forEach((window) => {
+    msgPrivate.forEach((window,index) => {
+      usernameClass=window.classList[2];
       window.classList.add("contLight");
       window.classList.remove("contdark");
+      window.classList.remove(usernameClass);
+      window.classList.add(usernameClass);
+
+
+
     });
     msgInput.style.borderColor = "purple";
     msgInput.style.color = "#5b295b";
@@ -926,8 +934,11 @@ switchmode.addEventListener("pointerdown", () => {
     msgContent.classList.remove("contLight");
     msgContent.classList.add("contdark");
     msgPrivate.forEach((window) => {
+      usernameClass=window.classList[2];
       window.classList.remove("contLight");
       window.classList.add("contdark");
+      window.classList.remove(usernameClass);
+      window.classList.add(usernameClass);
     });
 
     msgInput.style.borderColor = "black";
