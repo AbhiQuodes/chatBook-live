@@ -955,7 +955,7 @@ switchmode.addEventListener("pointerdown", () => {
 headIcon.addEventListener("pointerdown", () => {
   if (headIcon.style.scale != "4") {
     headIcon.style.scale = "4";
-    headIcon.style.left = "20vw";
+    headIcon.style.left = "calc(20vw + 30px)";
     headIcon.style.top = "25vh";
   } else {
     headIcon.style.scale = "0.7";
